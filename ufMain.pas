@@ -133,9 +133,9 @@ end;
 procedure TfrmMain.ChkXChange(Sender: TObject);
 begin
    if chkX.IsChecked then
-         plotPanel.data.columns[X_COLUMN].visible := True
-      else
-         plotPanel.data.columns[X_COLUMN].visible := False;
+      plotPanel.setDataColumnVisibility(X_COLUMN, True)
+   else
+     plotPanel.setDataColumnVisibility(X_COLUMN, False);
   plotPanel.Redraw;
 end;
 
@@ -143,9 +143,9 @@ end;
 procedure TfrmMain.chkYChange(Sender: TObject);
 begin
    if chkY.IsChecked then
-         plotPanel.data.columns[Y_COLUMN].visible := True
-      else
-         plotPanel.data.columns[Y_COLUMN].visible := False;
+      plotPanel.setDataColumnVisibility(Y_COLUMN, True)
+   else
+      plotPanel.setDataColumnVisibility(Y_COLUMN, False);
   plotPanel.Redraw;
 end;
 
@@ -153,9 +153,9 @@ end;
 procedure TfrmMain.chkZChange(Sender: TObject);
 begin
    if chkZ.IsChecked then
-         plotPanel.data.columns[Z_COLUMN].visible := True
-      else
-         plotPanel.data.columns[Z_COLUMN].visible := False;
+      plotPanel.setDataColumnVisibility(Z_COLUMN, True)
+   else
+      plotPanel.setDataColumnVisibility(Z_COLUMN, False);
   plotPanel.Redraw;
 end;
 
@@ -169,21 +169,21 @@ end;
 
 procedure TfrmMain.colorComboXChange(Sender: TObject);
 begin
-  plotPanel.data.columns[X_COLUMN].color := colorComboX.Color;
+  plotPanel.setColumnColor (X_COLUMN, colorComboX.Color);
   plotPanel.Redraw;
 end;
 
 
 procedure TfrmMain.colorComboYChange(Sender: TObject);
 begin
-  plotPanel.data.columns[Y_COLUMN].color := colorComboY.Color;
+  plotPanel.setColumnColor (Y_COLUMN, colorComboY.Color);
   plotPanel.Redraw;
 end;
 
 
 procedure TfrmMain.colorComboZChange(Sender: TObject);
 begin
-  plotPanel.data.columns[Z_COLUMN].color := colorComboZ.Color;
+  plotPanel.setColumnColor (Z_COLUMN, colorComboZ.Color);
   plotPanel.Redraw;
 end;
 
@@ -209,12 +209,12 @@ begin
   // Create simulation data for lorenz model
   hstep := 0.004;
   numPoints := trunc ((plotPanel.x_wmax - plotPanel.x_wmin)/hstep) + 1;
-  plotPanel.setUpdata(numPoints, 4);
+  plotPanel.allocateSpace(numPoints, 4);
   runSimulation;
 
-  colorComboX.Color := plotPanel.data.columns[X_COLUMN].color;
-  colorComboY.Color := plotPanel.data.columns[Y_COLUMN].color;
-  colorComboZ.Color := plotPanel.data.columns[Z_COLUMN].color;
+  colorComboX.Color := plotPanel.getColumnColor (X_COLUMN);
+  colorComboY.Color := plotPanel.getColumnColor (Y_COLUMN);
+  colorComboZ.Color := plotPanel.getColumnColor (Z_COLUMN);
   colorComboBackground.Color := plotPanel.backgroundColor;
 
   plotPanel.setXAxisColumn (TIME_COLUMN);
@@ -236,15 +236,16 @@ var i, j : integer;
     x, dy : TVector;
     t : double;
 begin
+  // Initial conditions
   x[0] := 1.0; x[1]:= 1.0; x[2] := 1.0;
 
   t := 0;
   for i := 0 to numPoints - 1 do
       begin
-      plotPanel.data.setData(i, 0, t);
-      plotPanel.data.setData(i, 1, x[0]);
-      plotPanel.data.setData(i, 2, x[1]);
-      plotPanel.data.setData(i, 3, x[2]);
+      plotPanel.setData (i, 0, t);
+      plotPanel.setData (i, 1, x[0]);
+      plotPanel.setData (i, 2, x[1]);
+      plotPanel.setData (i, 3, x[2]);
       lorenz (x, dy);
       for j := 0 to 2 do
          x[j] := x[j] + hstep*dy[j];
@@ -265,7 +266,7 @@ procedure TfrmMain.rdoTimeChange(Sender: TObject);
 begin
   plotPanel.x_wmin := 0;
   plotPanel.x_wmax := 30;
-  plotPanel.data.XColumnIndex := TIME_COLUMN;
+  plotPanel.setXAxisColumn(TIME_COLUMN);
   plotpanel.Redraw;
 end;
 
@@ -273,7 +274,7 @@ procedure TfrmMain.rdoXChange(Sender: TObject);
 begin
   plotPanel.x_wmin := -30;
   plotPanel.x_wmax := 30;
-  plotPanel.data.XColumnIndex := X_COLUMN;
+  plotPanel.setXAxisColumn(X_COLUMN);
   plotpanel.Redraw;
 end;
 
@@ -281,7 +282,7 @@ procedure TfrmMain.rdoYChange(Sender: TObject);
 begin
   plotPanel.x_wmin := -30;
   plotPanel.x_wmax := 30;
-  plotPanel.data.XColumnIndex := Y_COLUMN;
+  plotPanel.setXAxisColumn(Y_COLUMN);
   plotpanel.Redraw;
 end;
 
@@ -289,7 +290,7 @@ procedure TfrmMain.rdoZChange(Sender: TObject);
 begin
   plotPanel.x_wmin := 0;
   plotPanel.x_wmax := 60;
-  plotPanel.data.XColumnIndex := Z_COLUMN;
+  plotPanel.setXAxisColumn(Z_COLUMN);
   plotpanel.Redraw;
 end;
 
