@@ -206,7 +206,7 @@ begin
 
   plotPanel.OnMouseMove := OnMouseMove;
 
-  // Create simulation data for the lorenz model
+  // Create initial simulation data for the lorenz model
   hstep := 0.004;
   numPoints := trunc ((plotPanel.x_wmax - plotPanel.x_wmin)/hstep) + 1;
   plotPanel.allocateSpace(numPoints, 4);

@@ -61,9 +61,12 @@ type
      //procedure SkMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
      procedure exportToPdf (fileName : string);
      procedure exportToPng (fileName : string);
-     procedure setUpdata (nRows, nColumns : integer);
+     procedure allocateSpace (nRows, nColumns : integer);
      procedure setXAxisColumn (index : integer);
      procedure setDataColumnVisibility (index : integer; visible : boolean);
+     procedure setColumnColor (index : integer; color : TAlphaColor);
+     function  getColumnColor (index : integer) : TAlphaColor;
+     procedure setData (i, j : integer; value : double);
 
      constructor Create (AOwner: TComponent); override;
    published
@@ -222,7 +225,7 @@ begin
 end;
 
 
-procedure TPlotPanel.setUpdata(nRows: Integer; nColumns: Integer);
+procedure TPlotPanel.allocateSpace(nRows: Integer; nColumns: Integer);
 begin
   data.createSpace (nRows, nColumns);
 end;
@@ -236,12 +239,30 @@ begin
 end;
 
 
+procedure TPlotPanel.setColumnColor (index : integer; color : TAlphaColor);
+begin
+  data.columns[index].color := color;
+end;
+
+
+function TPlotPanel.getColumnColor (index : integer) : TAlphaColor;
+begin
+  result := data.columns[index].color;
+end;
+
+
+procedure TPlotPanel.setData (i, j : integer; value : double);
+begin
+  data.setdata (i, j, value);
+end;
+
 // columns in the data series have a visibility flag.
 // If set to false, a given column will not be plotted.
 procedure TPlotPanel.setDataColumnVisibility (index : integer; visible : boolean);
 begin
   data.columns[index].visible := visible;
 end;
+
 
 // We can set the x axis to whatever column we want in the dataseries
 procedure TPlotPanel.setXAxisColumn (index : integer);
@@ -333,7 +354,7 @@ begin
     ACanvas.Restore;
   end;
 
-  // Clipping rectangle restored so that we can now to draw outside the plotting area.
+  // Original clipping rectangle restored so that we can now to draw outside the plotting area.
 
   // Draw axes lines
   LPaint.StrokeWidth := 1;
@@ -394,7 +415,7 @@ end;
 function TPlotPanel.worldtoScreen(x_w, y_w : double) : TPointF;
 var sx, sy : double;
 begin
-  // point on viewport
+  // point on screen
   // calculating Sx and Sy
   sx := (x_vmax - x_vmin) / (x_wmax - x_wmin);
   sy := (y_vmax - y_vmin) / (y_wmax - y_wmin);
