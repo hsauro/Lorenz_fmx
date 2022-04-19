@@ -279,11 +279,11 @@ procedure TPlotPanel.drawToCanvas (ACanvas : ISkCanvas);
 var LPaint: ISkPaint;
     LPath : ISkPathBuilder;
     Path : ISKPath;
-    pt, pt1, pt2: TPointF;
-    i, j, k : integer;
+    pt : TPointF;
+    i, k : integer;
     nu : TNiceScale;
     maxTicks : integer;
-    x, y, t, hstep : double;
+    x, y : double;
 begin
  if data.nRows < 2 then
     exit;
@@ -300,13 +300,13 @@ begin
          begin
          if data.columns[k].visible then
             begin
-            pt1 := worldtoScreen(data.getData(0,data.XColumnIndex), data.getData(0,k));
+            pt := worldtoScreen(data.getData(0,data.XColumnIndex), data.getData(0,k));
             LPath := TSkPathBuilder.Create;
-            LPath.MoveTo(pt1);
+            LPath.MoveTo (pt);
             for i := 1 to data.nRows - 1 do
                 begin
-                pt2 := worldtoScreen(data.getData(i,data.XColumnIndex), data.getData(i,k));
-                LPath.LineTo(pt2);
+                pt := worldtoScreen(data.getData(i,data.XColumnIndex), data.getData(i,k));
+                LPath.LineTo (pt);
                 end;
 
             path := LPath.Detach;
@@ -318,43 +318,43 @@ begin
   // Draw axes lines
   LPaint.StrokeWidth := 1;
   LPaint.Color := claBlack;
-  pt1 := worldtoScreen(x_wmin, 0);
-  pt2 := worldtoScreen(x_wmax, 0);
-  ACanvas.DrawLine (pt1, pt2, LPaint);
+  ACanvas.DrawLine (worldtoScreen(x_wmin, 0), worldtoScreen(x_wmax, 0), LPaint);
+  ACanvas.DrawLine (worldtoScreen(0, y_wmin), worldtoScreen(0, y_wmax), LPaint);
 
-  pt1 := worldtoScreen(0, y_wmin);
-  pt2 := worldtoScreen(0, y_wmax);
-  ACanvas.DrawLine (pt1, pt2, LPaint);
-
-
+  // Draw tick marks
   nu := TNiceScale.Create (x_wmin, x_wmax);
-  // Draw x-axis ticks
-  maxTicks := trunc (nu.maxTicks);
-  x := nu.nicemin;
+  try
+    // Draw x-axis ticks
+    maxTicks := trunc (nu.maxTicks);
+    x := nu.nicemin;
 
-  for i := 0 to maxTicks do
-      begin
-      pt := worldtoScreen(x, 0);
-      ACanvas.DrawLine(PointF(pt.x, pt.y), PointF(pt.x, pt.y+10), LPaint);
-      writeText (ACanvas, x, pt.x, pt.y + 20);
-      x := x + nu.tickSpacing;
-      end;
-  nu.free;
+    for i := 0 to maxTicks do
+        begin
+        pt := worldtoScreen(x, 0);
+        ACanvas.DrawLine(PointF(pt.x, pt.y), PointF(pt.x, pt.y+10), LPaint);
+        writeText (ACanvas, x, pt.x, pt.y + 20);
+        x := x + nu.tickSpacing;
+        end;
+  finally
+    nu.free;
+  end;
 
   nu := TNiceScale.Create (y_wmin, y_wmax);
+  try
+    // Draw y-axis ticks
+    maxTicks := trunc (nu.maxTicks);
+    y := nu.nicemin;
 
-  // Draw y-axis ticks
-  maxTicks := trunc (nu.maxTicks);
-  y := nu.nicemin;
-
-  for i := 0 to maxTicks do
-      begin
-      pt := worldtoScreen(0, y);
-      ACanvas.DrawLine(PointF(pt.x, pt.y), PointF(pt.x-10, pt.y), LPaint);
-      writeText (ACanvas, y, pt.x - 22, pt.y);
-      y := y + nu.tickSpacing;
-      end;
-  nu.free;
+    for i := 0 to maxTicks do
+        begin
+        pt := worldtoScreen(0, y);
+        ACanvas.DrawLine(PointF(pt.x, pt.y), PointF(pt.x-10, pt.y), LPaint);
+        writeText (ACanvas, y, pt.x - 22, pt.y);
+        y := y + nu.tickSpacing;
+        end;
+  finally
+    nu.free;
+  end;
 end;
 
 
