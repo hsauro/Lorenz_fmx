@@ -206,7 +206,7 @@ begin
 
   plotPanel.OnMouseMove := OnMouseMove;
 
-  // Create simulation data for lorenz model
+  // Create simulation data for the lorenz model
   hstep := 0.004;
   numPoints := trunc ((plotPanel.x_wmax - plotPanel.x_wmin)/hstep) + 1;
   plotPanel.allocateSpace(numPoints, 4);
@@ -270,6 +270,7 @@ begin
   plotpanel.Redraw;
 end;
 
+
 procedure TfrmMain.rdoXChange(Sender: TObject);
 begin
   plotPanel.x_wmin := -30;
@@ -277,6 +278,7 @@ begin
   plotPanel.setXAxisColumn(X_COLUMN);
   plotpanel.Redraw;
 end;
+
 
 procedure TfrmMain.rdoYChange(Sender: TObject);
 begin
@@ -286,6 +288,7 @@ begin
   plotpanel.Redraw;
 end;
 
+
 procedure TfrmMain.rdoZChange(Sender: TObject);
 begin
   plotPanel.x_wmin := 0;
@@ -293,6 +296,7 @@ begin
   plotPanel.setXAxisColumn(Z_COLUMN);
   plotpanel.Redraw;
 end;
+
 
 procedure TfrmMain.trackBetaChange(Sender: TObject);
 begin
@@ -305,6 +309,7 @@ begin
      end;
 end;
 
+
 procedure TfrmMain.trackRhoChange(Sender: TObject);
 begin
   if trackRho.Enabled then
@@ -315,6 +320,7 @@ begin
      plotPanel.Redraw;
      end;
 end;
+
 
 procedure TfrmMain.trackSigmaChange(Sender: TObject);
 begin
