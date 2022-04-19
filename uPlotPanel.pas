@@ -352,7 +352,6 @@ begin
       pt := worldtoScreen(0, y);
       ACanvas.DrawLine(PointF(pt.x, pt.y), PointF(pt.x-10, pt.y), LPaint);
       writeText (ACanvas, y, pt.x - 22, pt.y);
-
       y := y + nu.tickSpacing;
       end;
   nu.free;
