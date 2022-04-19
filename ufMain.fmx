@@ -6,6 +6,8 @@ object frmMain: TfrmMain
   ClientWidth = 1092
   Position = ScreenCenter
   StyleBook = StyleBook
+  Constraints.MinHeight = 850.000000000000000000
+  Constraints.MinWidth = 800.000000000000000000
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -19,7 +21,6 @@ object frmMain: TfrmMain
     Size.PlatformDefault = False
     TabOrder = 0
     object btnPdf: TButton
-      Anchors = [akTop, akRight]
       Position.X = 104.000000000000000000
       Position.Y = 24.000000000000000000
       TabOrder = 2
@@ -27,7 +28,6 @@ object frmMain: TfrmMain
       OnClick = btnPdfClick
     end
     object btnSaveAsPng: TButton
-      Anchors = [akTop, akRight]
       Position.X = 8.000000000000000000
       Position.Y = 24.000000000000000000
       Size.Width = 81.000000000000000000
@@ -36,6 +36,14 @@ object frmMain: TfrmMain
       TabOrder = 1
       Text = 'Save as PNG'
       OnClick = btnSaveAsPngClick
+    end
+    object btnAbout: TButton
+      Anchors = [akTop, akRight]
+      Position.X = 992.000000000000000000
+      Position.Y = 24.000000000000000000
+      TabOrder = 3
+      Text = 'About'
+      OnClick = btnAboutClick
     end
   end
   object pnlRight: TPanel
@@ -53,6 +61,7 @@ object frmMain: TfrmMain
     TabOrder = 2
     object trackSigma: TTrackBar
       CanParentFocus = True
+      Enabled = False
       Orientation = Horizontal
       Position.X = 32.000000000000000000
       Position.Y = 80.000000000000000000
@@ -73,6 +82,7 @@ object frmMain: TfrmMain
     end
     object trackBeta: TTrackBar
       CanParentFocus = True
+      Enabled = False
       Max = 300.000000000000000000
       Orientation = Horizontal
       Position.X = 32.000000000000000000
@@ -85,6 +95,7 @@ object frmMain: TfrmMain
     end
     object trackRho: TTrackBar
       CanParentFocus = True
+      Enabled = False
       Max = 300.000000000000000000
       Orientation = Horizontal
       Position.X = 32.000000000000000000
@@ -340,7 +351,7 @@ object frmMain: TfrmMain
         Size.Height = 17.000000000000000000
         Size.PlatformDefault = False
         Text = '0.0'
-        TabOrder = 14
+        TabOrder = 5
       end
     end
     object SkLabel1: TSkLabel
@@ -356,9 +367,9 @@ object frmMain: TfrmMain
         item
           Text = 
             'Demonstration  application to show '#13#10'canvas drawing with skia4De' +
-            'lphi'#13#10'using FMX. V1.0'#13#10#13#10'Solves the Lorenz attractor'#13#10'equations ' +
-            'using a simple Euler '#13#10'method. This text uses TSkLabel'#13#10#13#10'Uses s' +
-            'kia4Delphi 3.2.2'
+            'lphi'#13#10'using FMX. '#13#10#13#10'Solves the Lorenz attractor'#13#10'equations usin' +
+            'g a simple Euler '#13#10'method. This text uses TSkLabel'#13#10#13#10'Uses skia4' +
+            'Delphi 3.2.2'
         end>
     end
   end

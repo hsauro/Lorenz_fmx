@@ -49,6 +49,7 @@ type
     lblBeta: TLabel;
     lblRho: TLabel;
     SkLabel1: TSkLabel;
+    btnAbout: TButton;
     procedure FormCreate(Sender: TObject);
     procedure trackSigmaChange(Sender: TObject);
     procedure trackBetaChange(Sender: TObject);
@@ -66,14 +67,17 @@ type
     procedure btnPdfClick(Sender: TObject);
     procedure ColorComboBackgroundChange(Sender: TObject);
     procedure btnSaveAsPngClick(Sender: TObject);
+    procedure btnAboutClick(Sender: TObject);
   private
     { Private declarations }
+    hstep : double;
+    numPoints : integer;
     procedure OnMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
   public
     { Public declarations }
     plotPanel : TPlotPanel;
     sigma, rho, beta : double;
-    procedure generateData;
+    procedure runSimulation;
     procedure lorenz (var x, dy : TVector);
   end;
 
@@ -101,6 +105,11 @@ end;
 
 
 // Generate pdf output
+procedure TfrmMain.btnAboutClick(Sender: TObject);
+begin
+  ShowMessage('Veison 1.1, running skia ' + skia.SkVersion);
+end;
+
 procedure TfrmMain.btnPdfClick(Sender: TObject);
 begin
   if plotPanel.data.nRows = 0 then exit;
@@ -193,14 +202,13 @@ begin
   beta := 8/3.0;
   rho := 28.0;
 
-  trackSigma.Value := Sigma*10;
-  trackBeta.Value := beta*10;
-  trackRho.Value := rho*10;
-
   plotPanel.OnMouseMove := OnMouseMove;
 
   // Create simulation data for lorenz model
-  generateData;
+  hstep := 0.004;
+  numPoints := trunc ((plotPanel.x_wmax - plotPanel.x_wmin)/hstep) + 1;
+  plotPanel.setUpdata(numPoints, 4);
+  runSimulation;
 
   colorComboX.Color := plotPanel.data.columns[X_COLUMN].color;
   colorComboY.Color := plotPanel.data.columns[Y_COLUMN].color;
@@ -210,21 +218,23 @@ begin
   plotPanel.setXAxisColumn (TIME_COLUMN);
   plotPanel.setDataColumnVisibility (TIME_COLUMN, False);
 
-  plotPanel.Redraw;
+  trackSigma.Value := Sigma*10;
+  trackBeta.Value := beta*10;
+  trackRho.Value := rho*10;
+
+  // Turn them on to allow track events to operate
+  trackSigma.enabled := True;
+  trackBeta.enabled := True;
+  trackRho.enabled := True;
 end;
 
 
-procedure TfrmMain.generateData;
+procedure TfrmMain.runSimulation;
 var i, j : integer;
     x, dy : TVector;
-    t, hstep : double;
-    numPoints : integer;
+    t : double;
 begin
-  hstep := 0.004;
-  numPoints := trunc ((plotPanel.x_wmax - plotPanel.x_wmin)/hstep) + 1;
   x[0] := 1.0; x[1]:= 1.0; x[2] := 1.0;
-  plotPanel.setUpData(numPoints, 4);
-  plotPanel.data.columns[TIME_COLUMN].visible := False;
 
   t := 0;
   for i := 0 to numPoints - 1 do
@@ -283,26 +293,35 @@ end;
 
 procedure TfrmMain.trackBetaChange(Sender: TObject);
 begin
-  lblbeta.text := Format ('%2.2f', [trackBeta.Value/10]);
-  beta := trackBeta.Value/10;
-  generateData;
-  plotPanel.Redraw;
+  if trackBeta.Enabled then
+     begin
+     lblbeta.text := Format ('%2.2f', [trackBeta.Value/10]);
+     beta := trackBeta.Value/10;
+     runSimulation;
+     plotPanel.Redraw;
+     end;
 end;
 
 procedure TfrmMain.trackRhoChange(Sender: TObject);
 begin
-  lblRho.text := Format ('%2.2f', [trackRho.Value/10]);
-  rho := trackRho.Value/10;
-  generateData;
-  plotPanel.Redraw;
+  if trackRho.Enabled then
+     begin
+     lblRho.text := Format ('%2.2f', [trackRho.Value/10]);
+     rho := trackRho.Value/10;
+     runSimulation;
+     plotPanel.Redraw;
+     end;
 end;
 
 procedure TfrmMain.trackSigmaChange(Sender: TObject);
 begin
-  lblSigma.Text := Format ('%2.2f', [trackSigma.Value/10]);
-  sigma := trackSigma.Value/10;
-  generateData;
-  plotPanel.Redraw;
+  if trackSigma.Enabled then
+     begin
+     lblSigma.Text := Format ('%2.2f', [trackSigma.Value/10]);
+     sigma := trackSigma.Value/10;
+     runSimulation;
+     plotPanel.Redraw;
+     end;
 end;
 
 end.
