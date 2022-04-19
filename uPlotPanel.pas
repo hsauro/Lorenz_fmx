@@ -284,36 +284,56 @@ var LPaint: ISkPaint;
     nu : TNiceScale;
     maxTicks : integer;
     x, y : double;
+    CDest : TRectF;
+    topCorner, bottomRightcorner : TPointF;
 begin
- if data.nRows < 2 then
-    exit;
+  if data.nRows < 2 then
+     exit;
 
- LPaint := TSkPaint.Create(TSkPaintStyle.Stroke);
- LPaint.StrokeJoin := TSkStrokeJoin.Round;
- LPaint.AntiAlias := True;
- LPaint.StrokeWidth := 2.5;
- LPaint.Color := claBlue;
- for k := 0 to data.nColumns - 1 do
-      begin
-      LPaint.Color := data.columns[k].color;
-      if k <> data.XColumnIndex then
-         begin
-         if data.columns[k].visible then
-            begin
-            pt := worldtoScreen(data.getData(0,data.XColumnIndex), data.getData(0,k));
-            LPath := TSkPathBuilder.Create;
-            LPath.MoveTo (pt);
-            for i := 1 to data.nRows - 1 do
-                begin
-                pt := worldtoScreen(data.getData(i,data.XColumnIndex), data.getData(i,k));
-                LPath.LineTo (pt);
-                end;
+  // Create clipping rectangle for the plotting area
+  ACanvas.Save;
+  try
+    topCorner := worldtoScreen(x_wmin, y_wmax);
+    bottomRightcorner := worldtoScreen(x_wmax, y_wmin);
+    CDest.Left := topCorner.x;
+    CDest.Top := topCorner.y;
+    CDest.Width := bottomRightcorner.x - topCorner.x;
+    CDest.Height := bottomRightcorner.y - topCorner.y;
 
-            path := LPath.Detach;
-            ACanvas.DrawPath(path, LPaint);
-            end;
-         end;
-      end;
+    ACanvas.ClipRect(CDest);
+
+    LPaint := TSkPaint.Create(TSkPaintStyle.Stroke);
+    LPaint.StrokeJoin := TSkStrokeJoin.Round;
+    LPaint.AntiAlias := True;
+    LPaint.StrokeWidth := 2.5;
+    LPaint.Color := claBlue;
+    for k := 0 to data.nColumns - 1 do
+        begin
+        LPaint.Color := data.columns[k].color;
+        if k <> data.XColumnIndex then
+           begin
+           if data.columns[k].visible then
+              begin
+              pt := worldtoScreen(data.getData(0,data.XColumnIndex), data.getData(0,k));
+              LPath := TSkPathBuilder.Create;
+              LPath.MoveTo (pt);
+              for i := 1 to data.nRows - 1 do
+                  begin
+                  pt := worldtoScreen(data.getData(i,data.XColumnIndex), data.getData(i,k));
+                  LPath.LineTo (pt);
+                  end;
+
+              path := LPath.Detach;
+              ACanvas.DrawPath(path, LPaint);
+              end;
+           end;
+        end;
+
+  finally
+    ACanvas.Restore;
+  end;
+
+  // Clipping rectangle restored so that we can now to draw outside the plotting area.
 
   // Draw axes lines
   LPaint.StrokeWidth := 1;

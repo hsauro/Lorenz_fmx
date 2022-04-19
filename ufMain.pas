@@ -110,6 +110,7 @@ begin
   ShowMessage('Veison 1.1, running skia ' + skia.SkVersion);
 end;
 
+
 procedure TfrmMain.btnPdfClick(Sender: TObject);
 begin
   if plotPanel.data.nRows = 0 then exit;
@@ -117,6 +118,7 @@ begin
   if SavePDFDialog.Execute then
      plotPanel.exportToPdf(SavePDFDialog.FileName);
 end;
+
 
 // Generate png output
 procedure TfrmMain.btnSaveAsPngClick(Sender: TObject);
