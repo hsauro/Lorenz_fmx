@@ -107,7 +107,7 @@ end;
 // Generate pdf output
 procedure TfrmMain.btnAboutClick(Sender: TObject);
 begin
-  ShowMessage('Veison 1.1, running skia ' + skia.SkVersion);
+  ShowMessage('Version 1.1, running skia4Delphi: ' + skia.SkVersion);
 end;
 
 

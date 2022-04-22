@@ -351,7 +351,7 @@ object frmMain: TfrmMain
         Size.Height = 17.000000000000000000
         Size.PlatformDefault = False
         Text = '0.0'
-        TabOrder = 4
+        TabOrder = 3
       end
     end
     object SkLabel1: TSkLabel
