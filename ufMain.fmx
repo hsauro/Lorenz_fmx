@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'Lorenz Attractor'
-  ClientHeight = 814
+  ClientHeight = 850
   ClientWidth = 1092
   Position = ScreenCenter
   StyleBook = StyleBook
@@ -15,7 +15,7 @@ object frmMain: TfrmMain
   DesignerMasterStyle = 0
   object Panel1: TPanel
     Align = Bottom
-    Position.Y = 742.000000000000000000
+    Position.Y = 778.000000000000000000
     Size.Width = 1092.000000000000000000
     Size.Height = 72.000000000000000000
     Size.PlatformDefault = False
@@ -49,14 +49,14 @@ object frmMain: TfrmMain
   object pnlRight: TPanel
     Align = Client
     Size.Width = 827.000000000000000000
-    Size.Height = 742.000000000000000000
+    Size.Height = 778.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
   end
   object Panel3: TPanel
     Align = Left
     Size.Width = 265.000000000000000000
-    Size.Height = 742.000000000000000000
+    Size.Height = 778.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
     object trackSigma: TTrackBar
@@ -78,7 +78,7 @@ object frmMain: TfrmMain
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
       Text = 'Sigma'
-      TabOrder = 10
+      TabOrder = 12
     end
     object trackBeta: TTrackBar
       CanParentFocus = True
@@ -113,7 +113,7 @@ object frmMain: TfrmMain
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
       Text = 'Beta'
-      TabOrder = 7
+      TabOrder = 9
     end
     object Label4: TLabel
       Position.X = 97.000000000000000000
@@ -122,7 +122,7 @@ object frmMain: TfrmMain
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       Text = 'Rho'
-      TabOrder = 6
+      TabOrder = 8
     end
     object GroupBox1: TGroupBox
       Position.X = 16.000000000000000000
@@ -131,12 +131,12 @@ object frmMain: TfrmMain
       Size.Height = 153.000000000000000000
       Size.PlatformDefault = False
       Text = ' X Axis '
-      TabOrder = 11
+      TabOrder = 13
       object rdoTime: TRadioButton
         IsChecked = True
-        Position.X = 24.000000000000000000
+        Position.X = 20.000000000000000000
         Position.Y = 32.000000000000000000
-        Size.Width = 73.000000000000000000
+        Size.Width = 85.000000000000000000
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 40
@@ -144,9 +144,9 @@ object frmMain: TfrmMain
         OnChange = rdoTimeChange
       end
       object rdoX: TRadioButton
-        Position.X = 24.000000000000000000
+        Position.X = 20.000000000000000000
         Position.Y = 59.000000000000000000
-        Size.Width = 65.000000000000000000
+        Size.Width = 85.000000000000000000
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 37
@@ -154,9 +154,9 @@ object frmMain: TfrmMain
         OnChange = rdoXChange
       end
       object rdoY: TRadioButton
-        Position.X = 24.000000000000000000
+        Position.X = 20.000000000000000000
         Position.Y = 86.000000000000000000
-        Size.Width = 40.000000000000000000
+        Size.Width = 85.000000000000000000
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 39
@@ -164,9 +164,9 @@ object frmMain: TfrmMain
         OnChange = rdoYChange
       end
       object rdoZ: TRadioButton
-        Position.X = 24.000000000000000000
+        Position.X = 20.000000000000000000
         Position.Y = 113.000000000000000000
-        Size.Width = 49.000000000000000000
+        Size.Width = 85.000000000000000000
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 38
@@ -181,12 +181,12 @@ object frmMain: TfrmMain
       Size.Height = 153.000000000000000000
       Size.PlatformDefault = False
       Text = ' Y Axis '
-      TabOrder = 12
+      TabOrder = 14
       object ChkX: TCheckBox
         IsChecked = True
-        Position.X = 16.000000000000000000
+        Position.X = 20.000000000000000000
         Position.Y = 32.000000000000000000
-        Size.Width = 80.000000000000000000
+        Size.Width = 85.000000000000000000
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 39
@@ -195,9 +195,9 @@ object frmMain: TfrmMain
       end
       object chkY: TCheckBox
         IsChecked = True
-        Position.X = 16.000000000000000000
+        Position.X = 20.000000000000000000
         Position.Y = 59.000000000000000000
-        Size.Width = 80.000000000000000000
+        Size.Width = 85.000000000000000000
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 38
@@ -206,14 +206,21 @@ object frmMain: TfrmMain
       end
       object chkZ: TCheckBox
         IsChecked = True
-        Position.X = 16.000000000000000000
+        Position.X = 20.000000000000000000
         Position.Y = 86.000000000000000000
-        Size.Width = 80.000000000000000000
+        Size.Width = 85.000000000000000000
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 37
         Text = 'Z'
         OnChange = chkZChange
+      end
+      object btnAllYAxis: TButton
+        Position.X = 20.000000000000000000
+        Position.Y = 113.000000000000000000
+        TabOrder = 42
+        Text = 'All Y Axis'
+        OnClick = btnAllYAxisClick
       end
     end
     object colorComboX: TColorComboBox
@@ -227,7 +234,8 @@ object frmMain: TfrmMain
       Size.Width = 212.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 16
+      StyleLookup = 'comboboxstyle'
+      TabOrder = 18
       OnChange = colorComboXChange
     end
     object colorComboY: TColorComboBox
@@ -241,7 +249,7 @@ object frmMain: TfrmMain
       Size.Width = 212.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 15
+      TabOrder = 17
       OnChange = colorComboYChange
     end
     object colorComboZ: TColorComboBox
@@ -255,7 +263,7 @@ object frmMain: TfrmMain
       Size.Width = 212.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 14
+      TabOrder = 16
       OnChange = colorComboZChange
     end
     object Label5: TLabel
@@ -265,7 +273,7 @@ object frmMain: TfrmMain
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'X:'
-      TabOrder = 5
+      TabOrder = 7
     end
     object Label6: TLabel
       Position.X = 24.000000000000000000
@@ -274,7 +282,7 @@ object frmMain: TfrmMain
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Y:'
-      TabOrder = 4
+      TabOrder = 6
     end
     object Label7: TLabel
       Position.X = 24.000000000000000000
@@ -283,7 +291,7 @@ object frmMain: TfrmMain
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Z:'
-      TabOrder = 3
+      TabOrder = 5
     end
     object Label1: TLabel
       StyledSettings = [Family, Style, FontColor]
@@ -294,7 +302,7 @@ object frmMain: TfrmMain
       Size.PlatformDefault = False
       TextSettings.Font.Size = 15.000000000000000000
       Text = 'Lorenz Parameters:'
-      TabOrder = 8
+      TabOrder = 10
     end
     object ColorComboBackground: TColorComboBox
       DropDownKind = Custom
@@ -307,7 +315,7 @@ object frmMain: TfrmMain
       Size.Width = 212.000000000000000000
       Size.Height = 21.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 13
+      TabOrder = 15
       OnChange = ColorComboBackgroundChange
     end
     object Label8: TLabel
@@ -317,7 +325,7 @@ object frmMain: TfrmMain
       Size.Height = 24.000000000000000000
       Size.PlatformDefault = False
       Text = 'Background Color:'
-      TabOrder = 9
+      TabOrder = 11
     end
     object lblCoords: TLabel
       Position.X = 8.000000000000000000
@@ -326,39 +334,42 @@ object frmMain: TfrmMain
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Mouse Coords:'
+      TabOrder = 22
+    end
+    object edtSigma: TNumberBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      StyleLookup = 'editstyle'
+      TabOrder = 21
+      Cursor = crIBeam
+      ValueType = Float
+      KeyboardType = NumbersAndPunctuation
+      TextSettings.HorzAlign = Center
+      Position.X = 217.000000000000000000
+      Position.Y = 79.000000000000000000
+      Size.Width = 40.000000000000000000
+      Size.Height = 20.000000000000000000
+      Size.PlatformDefault = False
+      OnChange = edtSigmaChange
+    end
+    object edtBeta: TNumberBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 20
-    end
-    object lblSigma: TLabel
-      Position.X = 225.000000000000000000
-      Position.Y = 64.000000000000000000
-      Size.Width = 35.000000000000000000
-      Size.Height = 17.000000000000000000
+      Cursor = crIBeam
+      ValueType = Float
+      KeyboardType = NumbersAndPunctuation
+      TextSettings.HorzAlign = Center
+      Position.X = 217.000000000000000000
+      Position.Y = 122.000000000000000000
+      Size.Width = 40.000000000000000000
+      Size.Height = 20.000000000000000000
       Size.PlatformDefault = False
-      Text = '0.0'
-      TabOrder = 19
-    end
-    object lblBeta: TLabel
-      Position.X = 225.000000000000000000
-      Position.Y = 113.000000000000000000
-      Size.Width = 35.000000000000000000
-      Size.Height = 17.000000000000000000
-      Size.PlatformDefault = False
-      Text = '0.0'
-      TabOrder = 18
-      object lblRho: TLabel
-        Position.Y = 37.000000000000000000
-        Size.Width = 35.000000000000000000
-        Size.Height = 17.000000000000000000
-        Size.PlatformDefault = False
-        Text = '0.0'
-        TabOrder = 3
-      end
+      OnChange = edtBetaChange
     end
     object SkLabel1: TSkLabel
       Position.X = 20.000000000000000000
       Position.Y = 526.000000000000000000
-      Size.Width = 225.333328247070300000
-      Size.Height = 171.333328247070300000
+      Size.Width = 225.000000000000000000
+      Size.Height = 171.000000000000000000
       Size.PlatformDefault = False
       StyledSettings = [Family, Size, Style]
       TextSettings.FontColor = claAzure
@@ -369,8 +380,32 @@ object frmMain: TfrmMain
             'Demonstration  application to show '#13#10'canvas drawing with skia4De' +
             'lphi'#13#10'using FMX. '#13#10#13#10'Solves the Lorenz attractor'#13#10'equations usin' +
             'g a simple Euler '#13#10'method. This text uses TSkLabel'#13#10#13#10'Uses skia4' +
-            'Delphi 3.2.2'
+            'Delphi %s'
         end>
+    end
+    object edtRho: TNumberBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 3
+      Cursor = crIBeam
+      ValueType = Float
+      KeyboardType = NumbersAndPunctuation
+      TextSettings.HorzAlign = Center
+      Position.X = 217.000000000000000000
+      Position.Y = 163.000000000000000000
+      Size.Width = 40.000000000000000000
+      Size.Height = 20.000000000000000000
+      Size.PlatformDefault = False
+      OnChange = edtRhoChange
+    end
+    object btnRandomize: TButton
+      Position.X = 217.000000000000000000
+      Position.Y = 18.000000000000000000
+      Size.Width = 40.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      Text = 'Rnd'
+      OnClick = btnRandomizeClick
     end
   end
   object SavePDFDialog: TSaveDialog
