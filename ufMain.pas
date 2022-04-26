@@ -4,9 +4,10 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Ani,
   FMX.Controls.Presentation, FMX.StdCtrls, Skia, Skia.FMX, System.UIConsts,
-  FMX.Colors, FMX.Layouts, FMX.ListBox, uPlotPanel;
+  FMX.Colors, FMX.Layouts, FMX.ListBox, uPlotPanel, FMX.Edit, FMX.EditBox,
+  FMX.NumberBox;
 
 type
   TVector = array[0..2] of double;
@@ -45,11 +46,13 @@ type
     btnSaveAsPng: TButton;
     SavePNGDialog: TSaveDialog;
     lblCoords: TLabel;
-    lblSigma: TLabel;
-    lblBeta: TLabel;
-    lblRho: TLabel;
+    edtSigma: TNumberBox;
+    edtBeta: TNumberBox;
+    edtRho: TNumberBox;
     SkLabel1: TSkLabel;
     btnAbout: TButton;
+    btnAllYAxis: TButton;
+    btnRandomize: TButton;
     procedure FormCreate(Sender: TObject);
     procedure trackSigmaChange(Sender: TObject);
     procedure trackBetaChange(Sender: TObject);
@@ -68,6 +71,11 @@ type
     procedure ColorComboBackgroundChange(Sender: TObject);
     procedure btnSaveAsPngClick(Sender: TObject);
     procedure btnAboutClick(Sender: TObject);
+    procedure btnRandomizeClick(Sender: TObject);
+    procedure btnAllYAxisClick(Sender: TObject);
+    procedure edtSigmaChange(Sender: TObject);
+    procedure edtBetaChange(Sender: TObject);
+    procedure edtRhoChange(Sender: TObject);
   private
     { Private declarations }
     hstep : double;
@@ -107,7 +115,7 @@ end;
 // Generate pdf output
 procedure TfrmMain.btnAboutClick(Sender: TObject);
 begin
-  ShowMessage('Version 1.1, running skia4Delphi: ' + skia.SkVersion);
+  ShowMessage('Veison 1.1, running skia ' + skia.SkVersion);
 end;
 
 
@@ -129,6 +137,33 @@ begin
      plotPanel.exportToPng(SavePDFDialog.FileName);
 end;
 
+procedure AnimateTrackBarChange(targetTB: TTrackBar; newValue, duration: Single);
+begin
+
+end;
+
+procedure RandomizeTrackBarValue(targetTB: TTrackBar);
+begin
+  var newValue := random(trunc(targetTB.Max));
+  var duration := Abs(newValue - targetTB.Value) / 50;
+
+  FMX.Ani.TAnimator.AnimateFloat(targetTB, 'Value',
+    newValue, duration);
+end;
+
+procedure TfrmMain.btnRandomizeClick(Sender: TObject);
+begin
+  RandomizeTrackBarValue(trackSigma);
+  RandomizeTrackBarValue(trackRho);
+  RandomizeTrackBarValue(trackBeta);
+end;
+
+procedure TfrmMain.btnAllYAxisClick(Sender: TObject);
+begin
+  chkX.IsChecked := True;
+  chkY.IsChecked := True;
+  chkZ.IsChecked := True;
+end;
 
 procedure TfrmMain.ChkXChange(Sender: TObject);
 begin
@@ -190,6 +225,8 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  SkLabel1.Text := Format(SkLabel1.Text,[skia.SkVersion]);
+
   plotPanel := TPlotPanel.Create(self);
   plotPanel.Parent := pnlRight;
   plotPanel.Align := TAlignLayout.Client;
@@ -254,6 +291,24 @@ begin
 end;
 
 
+procedure TfrmMain.edtBetaChange(Sender: TObject);
+begin
+  if Abs(trackBeta.Value*10 - edtBeta.Value) > 0.001 then
+    trackBeta.Value := edtBeta.Value*10;
+end;
+
+procedure TfrmMain.edtRhoChange(Sender: TObject);
+begin
+  if Abs(trackRho.Value*10 - edtRho.Value) > 0.001 then
+    trackRho.Value := edtRho.Value*10;
+end;
+
+procedure TfrmMain.edtSigmaChange(Sender: TObject);
+begin
+  if Abs(trackSigma.Value*10 - edtSigma.Value) > 0.001 then
+    trackSigma.Value := edtSigma.Value*10;
+end;
+
 procedure TfrmMain.lorenz (var x, dy :  TVector);
 begin
   dy[0] := sigma * (x[1] - x[0]);
@@ -302,7 +357,7 @@ procedure TfrmMain.trackBetaChange(Sender: TObject);
 begin
   if trackBeta.Enabled then
      begin
-     lblbeta.text := Format ('%2.2f', [trackBeta.Value/10]);
+     edtbeta.text := Format ('%2.2f', [trackBeta.Value/10]);
      beta := trackBeta.Value/10;
      runSimulation;
      plotPanel.Redraw;
@@ -314,7 +369,7 @@ procedure TfrmMain.trackRhoChange(Sender: TObject);
 begin
   if trackRho.Enabled then
      begin
-     lblRho.text := Format ('%2.2f', [trackRho.Value/10]);
+     edtRho.text := Format ('%2.2f', [trackRho.Value/10]);
      rho := trackRho.Value/10;
      runSimulation;
      plotPanel.Redraw;
@@ -326,7 +381,7 @@ procedure TfrmMain.trackSigmaChange(Sender: TObject);
 begin
   if trackSigma.Enabled then
      begin
-     lblSigma.Text := Format ('%2.2f', [trackSigma.Value/10]);
+     edtSigma.Text := Format ('%2.2f', [trackSigma.Value/10]);
      sigma := trackSigma.Value/10;
      runSimulation;
      plotPanel.Redraw;
